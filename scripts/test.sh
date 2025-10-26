@@ -1,5 +1,4 @@
-#!/bin/bash
-
+#!/usr/bin/env bash
 # Logging PoC Testing Script
 
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -7,13 +6,10 @@ cd "$PROJECT_DIR"
 
 echo "================================"
 echo "Logging PoC - Testing Script"
-echo "================================"
-echo ""
-
+echo "================================\n"
 # Test API connectivity
 test_connectivity() {
-    echo "[*] Testing Service Connectivity..."
-    echo ""
+    echo "[*] Testing Service Connectivity...\n"
 
     # Test Elasticsearch
     echo -n "  Elasticsearch (9200): "
@@ -67,8 +63,7 @@ test_agents() {
 
 # Generate sample logs
 generate_logs() {
-    echo "[*] Generating Sample Logs..."
-    echo ""
+    echo "[*] Generating Sample Logs...\n"
 
     for agent in ubuntu-agent-1 ubuntu-agent-2; do
         echo "  Generating logs on $agent..."
@@ -81,18 +76,15 @@ generate_logs() {
     done
 
     echo ""
-    echo "[*] Check Wazuh dashboard for alerts (may take a few moments)"
-    echo ""
+    echo "[*] Check Wazuh dashboard for alerts (may take a few moments)\n"
 }
 
 # Check storage
 check_storage() {
-    echo "[*] Storage Usage..."
-    echo ""
+    echo "[*] Storage Usage...\n"
 
-    docker compose exec -T wazuh-indexer df -h /usr/share/elasticsearch/data 2>/dev/null || echo "  (Unable to check)"
+    docker compose exec -T wazuh-indexer df -h /usr/share/elasticsearch/data 2>/dev/null || echo "  (Unable to check)\n"
 
-    echo ""
 }
 
 # Run tests
@@ -116,14 +108,12 @@ case "${1}" in
         check_storage
         ;;
     *)
-        echo "Usage: $0 {connectivity|agents|logs|storage|all}"
-        echo ""
+        echo "Usage: $0 {connectivity|agents|logs|storage|all}\n"
         echo "  connectivity - Test connection to services"
         echo "  agents       - Check agent status"
         echo "  logs         - Generate sample logs"
         echo "  storage      - Check storage usage"
-        echo "  all          - Run all tests"
-        echo ""
+        echo "  all          - Run all tests\n"
         exit 1
         ;;
 esac
