@@ -1,0 +1,51 @@
+# Docker Compose
+.env.local
+docker-compose.override.yml
+
+# Data and logs
+data/
+logs/
+*.log
+
+# Velociraptor
+velociraptor/client.config.yaml
+velociraptor/server.key
+velociraptor/server.crt
+
+# Wazuh
+wazuh/*.key
+wazuh/*.crt
+wazuh/*.pem
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+
+# Certificates (auto-generated)
+*.key
+*.crt
+*.pem
+cert/
+
+# Temporary files
+*.tmp
+*.temp
+tmp/
+temp/
