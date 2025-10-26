@@ -367,7 +367,3 @@ For issues or contributions:
 ## License
 
 This PoC is provided as-is for educational and demonstration purposes.
-
-## Disclaimer
-
-This infrastructure is designed for testing and educational purposes. Use responsibly and in compliance with applicable laws and regulations.
