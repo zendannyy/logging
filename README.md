@@ -7,7 +7,7 @@ A comprehensive logging and DFIR infrastructure demonstration using Docker, Wazu
 This project creates a complete logging and security monitoring stack for digital forensics and incident response (DFIR) purposes, it consists of:
 
 - **[Wazuh](https://documentation.wazuh.com/current/index.html)**: SIEM/XDR platform for threat detection and security monitoring
-- **[Velociraptor]((https://docs.velociraptor.app/))**: General-purpose DFIR triage and investigation agent
+- **[Velociraptor](https://docs.velociraptor.app/))**: General-purpose DFIR triage and investigation agent
 - **Ubuntu Agents**: Containerized Linux systems with Wazuh agents and Velociraptor clients
 - **[Elasticsearch](https://www.elastic.co/docs)**: Data indexing and storage backend
 - **Wazuh Dashboard**: Web interface for security monitoring and analysis
