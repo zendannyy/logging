@@ -19,8 +19,7 @@ cd logging-poc
 ```
 
 The script will:
-- Build Docker images
-- Pull required images
+- Build and Pull required Docker images
 - Start all services
 - Wait for health checks
 
@@ -99,11 +98,11 @@ docker-compose exec ubuntu-agent-1 bash
 
 4. **Read Full Documentation**
    - See `README.md` for detailed information
-   - Explore configuration files for customization
+   - Explore config files for customization
 
 ## Troubleshooting
 
-### What services are Not Starting?
+### To see what services are not starting
 
 ```bash
 # Check logs
@@ -147,12 +146,11 @@ docker-compose exec ubuntu-agent-1 ping wazuh-manager
 | Velociraptor | DFIR tool | 8000 |
 | Ubuntu Agents | Log sources | - |
 
-## Need Help?
+## Debugging
 
 - Check logs: `docker-compose logs [service]`
 - Read README.md for detailed documentation
 - Review configuration files in `wazuh/`, `velociraptor/` directories
-
 ---
 
 **Ready to start?** Run:
