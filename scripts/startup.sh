@@ -1,5 +1,4 @@
-#!/bin/bash
-
+#!/usr/bin/env bash
 # Logging PoC Startup Script
 
 set -e
@@ -80,7 +79,6 @@ echo "    Username: admin"
 echo "    Password: admin"
 echo ""
 echo "To view logs:"
-echo "  docker compose logs -f [service_name]"
-echo ""
+echo -e "  docker compose logs -f [service_name]\n"
 echo "To stop services:"
 echo -e "  ./scripts/shutdown.sh\n"
