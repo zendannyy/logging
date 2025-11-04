@@ -5,7 +5,7 @@
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$PROJECT_DIR"
 
-echo "================================"
+echo -e "================================\n"
 echo -e "Logging PoC - Status Check\n"
 echo -e "================================\n"
 
