@@ -5,11 +5,11 @@ PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$PROJECT_DIR"
 
 echo "================================"
-echo "Logging PoC - Testing Script"
-echo "================================\n"
+echo -e "Logging PoC - Testing Script\n"
+echo -e "================================\n"
 # Test API connectivity
 test_connectivity() {
-    echo "[*] Testing Service Connectivity...\n"
+    echo -e "[*] Testing Service Connectivity...\n"
 
     # Test Elasticsearch
     echo -n "  Elasticsearch (9200): "
@@ -40,8 +40,7 @@ test_connectivity() {
 
 # Test agent status
 test_agents() {
-    echo "[*] Testing Agent Status..."
-    echo ""
+    echo -e "[*] Testing Agent Status...\n"
 
     for agent in ubuntu-agent-1 ubuntu-agent-2; do
         echo "  $agent:"
@@ -54,34 +53,31 @@ test_agents() {
         if docker compose exec -T $agent test -f /opt/velociraptor/velociraptor 2>/dev/null; then
             echo "    ✓ Velociraptor binary present"
         else
-            echo "    ✗ Velociraptor binary missing"
+            echo -e "    ✗ Velociraptor binary missing\n"
         fi
     done
-
-    echo ""
 }
 
 # Generate sample logs
 generate_logs() {
-    echo "[*] Generating Sample Logs...\n"
+    echo -e "[*] Generating Sample Logs...\n"
 
     for agent in ubuntu-agent-1 ubuntu-agent-2; do
         echo "  Generating logs on $agent..."
         docker compose exec -T $agent bash -c '
             for i in {1..10}; do
-                echo "[$(date)] Test alert - Event $i from $AGENT_NAME" >> /var/log/test.log
+                echo -e "[$(date)] Test alert - Event $i from $AGENT_NAME" >> /var/log/test.log
                 logger -t "test-app" "Test message $i from $AGENT_NAME"
             done
-        ' 2>/dev/null && echo "    ✓ Logs generated"
+        ' 2>/dev/null && echo "    ✓ Logs generated\n"
     done
 
-    echo ""
-    echo "[*] Check Wazuh dashboard for alerts (may take a few moments)\n"
+    echo -e "[*] Check Wazuh dashboard for alerts (may take a few moments)\n"
 }
 
 # Check storage
 check_storage() {
-    echo "[*] Storage Usage...\n"
+    echo -e "[*] Storage Usage...\n"
 
     docker compose exec -T wazuh-indexer df -h /usr/share/elasticsearch/data 2>/dev/null || echo "  (Unable to check)\n"
 
@@ -113,7 +109,7 @@ case "${1}" in
         echo "  agents       - Check agent status"
         echo "  logs         - Generate sample logs"
         echo "  storage      - Check storage usage"
-        echo "  all          - Run all tests\n"
+        echo -e "  all          - Run all tests\n"
         exit 1
         ;;
 esac
