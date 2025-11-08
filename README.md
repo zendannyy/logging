@@ -1,12 +1,12 @@
 
 # logging
-logging_poc
+
 =======
-# Logging Proof of Concept (PoC)
+### Logging Proof of Concept (PoC)
 
 A comprehensive logging and DFIR infrastructure demonstration using Docker, Wazuh, and Velociraptor.
 
-## Overview
+### Overview
 
 This project creates a complete logging and security monitoring stack for digital forensics and incident response (DFIR) purposes, it consists of:
 
@@ -16,7 +16,7 @@ This project creates a complete logging and security monitoring stack for digita
 - **[Elasticsearch](https://www.elastic.co/docs)**: Data indexing and storage backend
 - **Wazuh Dashboard**: Web interface for security monitoring and analysis
 
-## Prerequisites
+#### Prerequisites
 
 - Docker (version 20.10+)
 - Docker Compose (version 1.29+)
@@ -24,7 +24,7 @@ This project creates a complete logging and security monitoring stack for digita
 - Disk space: 10GB minimum for logs and data storage
 - Linux/macOS (Windows with WSL2 supported)
 
-## Project Structure
+### Project Structure
 
 ```
 logging-poc/
@@ -52,15 +52,15 @@ logging-poc/
     └── [Additional utilities]
 ```
 
-## Quick Start
+### Quick Start
 
-### 1. Clone/Navigate to Project
+#### 1. Clone/Navigate to Project
 
 ```bash
 cd logging-poc
 ```
 
-### 2. Start the Stack
+#### 2. Start the Stack
 
 ```bash
 ./scripts/startup.sh
@@ -72,7 +72,7 @@ This will:
 - Start all services
 - Wait for services to become healthy
 
-### 3. Access Services
+#### 3. Access Services
 
 Once started, services are available at:
 
@@ -83,7 +83,7 @@ Once started, services are available at:
 | Elasticsearch API | http://localhost:9200 | admin / SecurePassword123 |
 | Wazuh Manager API | https://localhost:9200 | wazuh / wazuh |
 
-### 4. Verify Setup
+#### 4. Verify Setup
 
 Check the status of all services:
 
@@ -98,9 +98,9 @@ docker-compose ps
 docker-compose logs -f [service_name]
 ```
 
-## Service Architecture
+### Service Architecture
 
-### Wazuh Manager
+#### Wazuh Manager
 - **Port**: 1514 (agent communication), 1515 (agent enrollment), 514/UDP (syslog)
 - **Role**: Central security monitoring and threat detection
 - **Features**:
@@ -109,17 +109,17 @@ docker-compose logs -f [service_name]
   - Vulnerability detection
   - DFIR capabilities
 
-### Wazuh Indexer (Elasticsearch)
+#### Wazuh Indexer (Elasticsearch)
 - **Port**: 9200, 9300
 - **Role**: Data storage and indexing
 - **Storage**: Persistent volume for log retention
 
-### Wazuh Dashboard
+#### Wazuh Dashboard
 - **Port**: 443 (HTTPS)
 - **Role**: Web interface for monitoring and analysis
 - **Access**: Browser-based dashboard
 
-### Velociraptor Server
+#### Velociraptor Server
 - **GUI Port**: 8000 (Web interface)
 - **Client Port**: 8001 (Client communication)
 - **Role**: DFIR triage and investigation
@@ -129,15 +129,16 @@ docker-compose logs -f [service_name]
   - VQL queries for forensics
   - Hunt management
 
-### Ubuntu Agents
+
+#### Ubuntu Agents
 - **Count**: 2 agents by default (ubuntu-agent-1, ubuntu-agent-2)
 - **Components**: Wazuh agent + Velociraptor client
 - **Logs**: Monitored and sent to Wazuh manager
 - **Communication**: Secure connection to manager and Velociraptor server
 
-## Configuration Details
+### Configuration Details
 
-### Wazuh Agent Configuration
+#### Wazuh Agent Configuration
 Located in `wazuh/ossec.conf`:
 - FIM: Monitors `/bin`, `/sbin`, `/usr/bin`, `/usr/sbin`, `/etc`, `/var/www`, `/var/ossec`
 - Log monitoring: auth.log, syslog, sudo.log
@@ -145,69 +146,70 @@ Located in `wazuh/ossec.conf`:
 - Syscollector: Hardware and software inventory
 - Vulnerability detection enabled
 
-### Velociraptor Configuration
+#### Velociraptor Configuration
 Located in `velociraptor/server.config.yaml`:
 - File-based datastore for PoC (can be upgraded to relational DB)
 - TLS encryption for client communication
 - Pre-configured DFIR artifacts for Linux systems
 - Hunt capability for distributed investigations
 
-### Environment Variables
+#### Environment Variables
 Configure in `.env` file:
 ```bash
-# Wazuh credentials
+
+# #Wazuh credentials
 WAZUH_ADMIN_PASSWORD=SecurePassword123
 WAZUH_INDEXER_PASSWORD=SecurePassword123
 
-# Velociraptor
+## Velociraptor
 VELOCIRAPTOR_ADMIN_PASSWORD=admin
 
-# Resources
+## Resources
 ES_JAVA_OPTS=-Xms512m -Xmx512m
 ```
 
-## Common Tasks
+### Common Tasks
 
-### View Real-time Logs
+#### View Real-time Logs
 
 ```bash
-# All services
+## All services
 docker-compose logs -f
 
-# Specific service
+## Specific service
 docker-compose logs -f wazuh-manager
 docker-compose logs -f velociraptor-server
 docker-compose logs -f ubuntu-agent-1
 ```
 
-### Access Service Shells
+#### Access Service Shells
 
 ```bash
-# Access Ubuntu agent
+## Access Ubuntu agent
 docker-compose exec ubuntu-agent-1 /bin/bash
 
-# Access Wazuh manager
+## Access Wazuh manager
 docker-compose exec wazuh-manager /bin/bash
 
-# Access Velociraptor
+# #Access Velociraptor
 docker-compose exec velociraptor-server /bin/bash
 ```
 
-### Generate Test Logs
+#### Generate Test Logs
 
 ```bash
-# Generate logs on agent
+## Generate logs on agent
 docker-compose exec ubuntu-agent-1 /usr/local/bin/generate-logs.sh
 ```
 
-### Check Wazuh Agent Status
+#### Check Wazuh Agent Status
 
 ```bash
-# On agent container
+## On agent container
 /var/ossec/bin/wazuh-control status
 ```
 
-### Run Velociraptor Hunts
+#### Run Velociraptor Hunts
 
 1. Log into Velociraptor GUI: https://localhost:8000
 2. Navigate to "Hunts" section
@@ -216,67 +218,67 @@ docker-compose exec ubuntu-agent-1 /usr/local/bin/generate-logs.sh
 5. Choose artifact to collect
 6. Monitor progress and review results
 
-### Restart Services
+#### Restart Services
 
 ```bash
-# Restart all
+## Restart all
 docker-compose restart
 
-# Restart specific service
+## Restart specific service
 docker-compose restart wazuh-manager
 docker-compose restart velociraptor-server
 ```
 
-## DFIR Use Cases
+### DFIR Use Cases
 
-### 1. Host Monitoring
+#### 1. Host Monitoring
 - Monitor file changes, system calls, and network connections
 - Detect unauthorized changes to critical files
 - Track user activity and login attempts
 
-### 2. Incident Investigation
+#### 2. Incident Investigation
 - Use Velociraptor to run targeted artifact collection
 - Analyze timeline of events in Wazuh
 - Correlate logs across multiple agents
 
-### 3. Threat Hunting
+#### 3. Threat Hunting
 - Execute VQL queries in Velociraptor
 - Hunt for indicators of compromise (IoCs)
 - Analyze suspicious processes and network connections
 
-### 4. Compliance & Auditing
+#### 4. Compliance & Auditing
 - Monitor system changes and access logs
 - Generate audit reports
 - Track system configuration changes
 
-## Troubleshooting
+### Troubleshooting
 
-### Services Won't Start
+#### Services Won't Start
 
 ```bash
-# Check Docker daemon
+## Check Docker daemon
 docker --version
 docker ps
 
-# View detailed logs
+## View detailed logs
 docker-compose logs
 
-# Remove stuck containers
+## Remove stuck containers
 docker-compose down -v
 ./scripts/startup.sh
 ```
 
-### High Memory Usage
+#### High Memory Usage
 
 ```bash
-# Reduce Elasticsearch memory allocation in .env
+## Reduce Elasticsearch memory allocation in .env
 ES_JAVA_OPTS=-Xms256m -Xmx256m
 
-# Restart services
+## Restart services
 docker-compose restart wazuh-indexer
 ```
 
-### Agent Connection Issues
+#### Agent Connection Issues
 
 1. Check network connectivity:
    ```bash
@@ -293,19 +295,19 @@ docker-compose restart wazuh-indexer
    docker-compose exec ubuntu-agent-1 cat /var/ossec/logs/ossec.log
    ```
 
-### Velociraptor Connection Issues
+#### Velociraptor Connection Issues
 
 ```bash
-# Verify client configuration
+## Verify client configuration
 docker-compose exec ubuntu-agent-1 cat /opt/velociraptor/client.config.yaml
 
-# Check Velociraptor server logs
+## Check Velociraptor server logs
 docker-compose logs velociraptor-server
 ```
 
-## Performance Tuning
+### Performance Tuning
 
-### For Production Use
+#### For Production Use
 
 1. **Elasticsearch Tuning**:
    - Increase heap size: `ES_JAVA_OPTS=-Xms2g -Xmx2g`
@@ -322,27 +324,26 @@ docker-compose logs velociraptor-server
    - Configure SSL certificates
    - Implement database replication
 
-## Security Considerations
+### Security Considerations
 
 ⚠️ **This is a PoC environment. For production:**
 
-1. Change all default passwords
+1. Change all default passwords (it's just local in PoC)
 2. Configure proper SSL/TLS certificates
 3. Enable authentication and authorization
 4. Network segmentation and firewall rules
 5. Regular backup and disaster recovery
-6. Implement audit logging
-7. Regular security updates and patching
+6. Regular security updates and patching
 
-## Cleanup
+### Cleanup
 
-### Stop Services
+#### Stop Services
 
 ```bash
 ./scripts/shutdown.sh
 ```
 
-### Remove Everything (including data)
+#### Remove Everything (including data)
 
 ```bash
 ./scripts/shutdown.sh --force
@@ -350,20 +351,20 @@ docker-compose logs velociraptor-server
 
 This will remove all containers, networks, and volumes.
 
-## Additional Resources
+### Additional Resources
 
 - [Wazuh Documentation](https://documentation.wazuh.com/)
 - [Velociraptor Documentation](https://docs.velociraptor.app/)
 - [Elasticsearch Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/7.17/index.html)
 - [DFIR Best Practices](https://www.sans.org/white-papers/)
 
-## Support & Contributing
+### Support & Contributing
 
 For issues or contributions:
 1. Check logs first: `docker-compose logs`
 2. Review configuration files
 3. Consult documentation links above 
 
-## License
+### License
 
 This PoC is provided as-is for educational and demonstration purposes.
