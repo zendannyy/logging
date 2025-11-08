@@ -299,3 +299,10 @@ For production use:
 ## Project Status: **COMPLETE** 
 
 The logging proof of concept is ready for use, testing, and demonstration of DFIR and security monitoring capabilities.
+
+\File location: /code/activity_planner/TEST_OUTPUT_EXAMPLE.md
+
+- Connection refused (API not running)
+  - Claude API error (missing API key)
+  - jq not found (use simple script)
+  - Plan ID empty (API key issue)
