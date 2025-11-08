@@ -28,7 +28,7 @@ A complete logging and DFIR infrastructure has been successfully created using D
 
 4. **Management Scripts**
    - `scripts/startup.sh` - Initialize and start all services
-   - `scripts/shutdown.sh` - Stop and clean up
+   - `scripts/shutdown.sh` - Stop services and clean up
    - `scripts/status.sh` - Check service health
    - `scripts/test.sh` - Run connectivity and functionality tests
 
@@ -91,7 +91,6 @@ logging-poc/
 - ✓ Wazuh agent for log collection
 - ✓ Velociraptor client for DFIR
 - ✓ Persistent log storage
-- ✓ Secure communication with manager
 - ✓ SSH access for testing
 
 ### Infrastructure
@@ -133,7 +132,6 @@ logging-poc/
 - Network connections
 - Running processes
 - Installed packages
-- Port monitoring
 
 ### Security Events
 - Failed login attempts
@@ -225,10 +223,8 @@ logging-poc/
 
 ### Enhance Security
 - Replace self-signed certificates
-- Implement AD/LDAP authentication
 - Configure firewall rules
 - Enable audit logging
-- Implement backup strategy
 
 ### Extend Monitoring
 - Add custom log sources
