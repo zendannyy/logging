@@ -105,7 +105,6 @@ docker-compose logs -f [service_name]
 - **Role**: Central security monitoring and threat detection
 - **Features**:
   - File integrity monitoring (FIM)
-  - System auditing
   - Log analysis and alerting
   - Vulnerability detection
   - DFIR capabilities
@@ -129,7 +128,6 @@ docker-compose logs -f [service_name]
   - Artifact collection
   - VQL queries for forensics
   - Hunt management
-  - Timeline analysis
 
 ### Ubuntu Agents
 - **Count**: 2 agents by default (ubuntu-agent-1, ubuntu-agent-2)
@@ -334,8 +332,7 @@ docker-compose logs velociraptor-server
 4. Network segmentation and firewall rules
 5. Regular backup and disaster recovery
 6. Implement audit logging
-7. Use strong encryption for data at rest and in transit
-8. Regular security updates and patching
+7. Regular security updates and patching
 
 ## Cleanup
 
@@ -365,8 +362,7 @@ This will remove all containers, networks, and volumes.
 For issues or contributions:
 1. Check logs first: `docker-compose logs`
 2. Review configuration files
-3. Consult documentation links above
-4. Create detailed issue reports
+3. Consult documentation links above 
 
 ## License
 
