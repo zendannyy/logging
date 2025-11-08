@@ -1,0 +1,156 @@
+version: '3.8'
+
+services:
+  # Wazuh Manager/SIEM
+  wazuh-manager:
+    image: wazuh/wazuh:latest
+    environment:
+      - INDEXER_URL=https://wazuh-indexer:9200
+      - INDEXER_USERNAME=admin
+      - INDEXER_PASSWORD=SecurePassword123
+      - FILEBEAT_SSL_VERIFICATION_MODE=full
+      - SSL_CERTIFICATE_AUTHORITIES=/etc/ssl/certs/ca.crt
+      - SSL_CERTIFICATE=/etc/ssl/certs/server.crt
+      - SSL_KEY=/etc/ssl/certs/server.key
+      - TZ=UTC
+    ports:
+      - "1514:1514"  # Agent communication
+      - "1515:1515"  # Agent enrollment
+      - "514:514/udp"  # Syslog input
+      - "9200:9200"  # API
+    volumes:
+      - wazuh-api-data:/var/ossec/api/configuration
+      - wazuh-etc:/var/ossec/etc
+      - wazuh-logs:/var/ossec/logs
+      - ./wazuh/ossec.conf:/wazuh-config-mount/ossec.conf
+    networks:
+      - logging-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Wazuh Indexer (Elasticsearch)
+  wazuh-indexer:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=true
+      - xpack.security.enrollment.enabled=true
+      - ELASTIC_PASSWORD=SecurePassword123
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - TZ=UTC
+    ports:
+      - "9300:9300"
+    volumes:
+      - wazuh-indexer-data:/usr/share/elasticsearch/data
+    networks:
+      - logging-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:9200 | grep -q 'missing authentication credentials'"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Wazuh Dashboard
+  wazuh-dashboard:
+    image: wazuh/wazuh-dashboard:latest
+    environment:
+      - INDEXER_USERNAME=admin
+      - INDEXER_PASSWORD=SecurePassword123
+      - WAZUH_API_URL=https://wazuh-manager
+      - WAZUH_API_USERNAME=wazuh
+      - WAZUH_API_PASSWORD=wazuh
+    ports:
+      - "443:5601"
+    volumes:
+      - wazuh-dashboard-data:/usr/share/wazuh-dashboard/data
+    networks:
+      - logging-network
+    depends_on:
+      - wazuh-manager
+      - wazuh-indexer
+
+  # Velociraptor Server
+  velociraptor-server:
+    image: ghcr.io/rapidm4n/velociraptor:latest
+    command: server --config /etc/velociraptor/server.config.yaml
+    environment:
+      - TZ=UTC
+    ports:
+      - "8000:8000"  # GUI
+      - "8001:8001"  # Client comms
+    volumes:
+      - velociraptor-data:/var/lib/velociraptor
+      - ./velociraptor/server.config.yaml:/etc/velociraptor/server.config.yaml:ro
+      - ./velociraptor/acls.yaml:/etc/velociraptor/acls.yaml:ro
+    networks:
+      - logging-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "-k", "https://localhost:8000"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Ubuntu agent with Wazuh agent + Velociraptor client
+  ubuntu-agent-1:
+    build:
+      context: ./agent
+      dockerfile: Dockerfile
+    environment:
+      - AGENT_NAME=ubuntu-agent-1
+      - WAZUH_MANAGER=wazuh-manager
+      - WAZUH_REGISTRATION_SERVER=wazuh-manager
+      - WAZUH_AGENT_GROUP=linux
+      - TZ=UTC
+    volumes:
+      - agent1-logs:/var/log
+      - agent1-ossec:/var/ossec
+    networks:
+      - logging-network
+    depends_on:
+      - wazuh-manager
+      - velociraptor-server
+    cap_add:
+      - SYS_ADMIN
+      - NET_ADMIN
+
+  # Ubuntu agent 2 (for testing log collection)
+  ubuntu-agent-2:
+    build:
+      context: ./agent
+      dockerfile: Dockerfile
+    environment:
+      - AGENT_NAME=ubuntu-agent-2
+      - WAZUH_MANAGER=wazuh-manager
+      - WAZUH_REGISTRATION_SERVER=wazuh-manager
+      - WAZUH_AGENT_GROUP=linux
+      - TZ=UTC
+    volumes:
+      - agent2-logs:/var/log
+      - agent2-ossec:/var/ossec
+    networks:
+      - logging-network
+    depends_on:
+      - wazuh-manager
+      - velociraptor-server
+    cap_add:
+      - SYS_ADMIN
+      - NET_ADMIN
+
+networks:
+  logging-network:
+    driver: bridge
+
+volumes:
+  wazuh-api-data:
+  wazuh-etc:
+  wazuh-logs:
+  wazuh-indexer-data:
+  wazuh-dashboard-data:
+  velociraptor-data:
+  agent1-logs:
+  agent1-ossec:
+  agent2-logs:
+  agent2-ossec:

@@ -1,0 +1,39 @@
+---
+# Velociraptor ACLs (Access Control Lists) Configuration
+
+# Default role - read-only access
+roles:
+  read_only:
+    permissions:
+      - READ_RESULTS
+      - LIST_CLIENTS
+
+  analyst:
+    permissions:
+      - READ_RESULTS
+      - LIST_CLIENTS
+      - START_HUNT
+      - COLLECT_CLIENT
+      - LABEL_CLIENT
+      - NOTEBOOK_EDIT
+
+  administrator:
+    permissions:
+      - ALL
+
+# User roles mapping
+users:
+  admin:
+    roles:
+      - administrator
+
+  analyst:
+    roles:
+      - analyst
+
+  viewer:
+    roles:
+      - read_only
+
+# Default permissions
+default_role: read_only
