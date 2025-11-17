@@ -11,6 +11,30 @@ Get the Logging PoC up and running
 
 ## Step-by-Step
 
+### 0. Configure Environment Variables
+
+**First-time setup:** Create your `.env` file from the template:
+
+```bash
+cd logging-poc
+cp .env.example .env
+```
+
+**Customize (optional):** Edit `.env` to change default passwords, ports, or other settings:
+
+```bash
+# Edit with your preferred editor
+nano .env
+# or
+vim .env
+```
+
+**Important:** The `.env` file contains sensitive credentials. It's already in `.gitignore` and won't be committed to version control.
+
+**⚠️ Set passwords BEFORE first startup!** After first startup, some passwords are stored in volumes and harder to change. See `CREDENTIALS.md` for details.
+
+**Default values work for testing**, but you should change passwords for production use.
+
 ### 1. Start the Stack
 
 ```bash
@@ -99,6 +123,55 @@ docker-compose exec ubuntu-agent-1 bash
 4. **Read Full Documentation**
    - See `README.md` for detailed information
    - Explore config files for customization
+
+## Environment Configuration
+
+### Creating the .env File
+
+The `.env` file is required for the project to run. It contains all configurable settings:
+
+1. **Copy the template:**
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Customize (optional):** Edit `.env` to set:
+   - Passwords (change from defaults for security)
+   - Ports (if you need to avoid conflicts)
+   - Memory settings (if you have limited RAM)
+   - Timezone
+
+3. **The `.env` file is git-ignored** - your secrets won't be committed.
+
+### What's in .env?
+
+- **Wazuh credentials:** Indexer, API, and Dashboard passwords
+- **Velociraptor credentials:** Admin credentials
+- **Port mappings:** All service ports
+- **Resource limits:** Java heap sizes, memory settings
+- **Timezone:** For consistent log timestamps
+
+**See `CREDENTIALS.md` for detailed information on:**
+- How credentials are initialized
+- Which can be changed after setup
+- How to change passwords if needed
+
+### Portability Best Practices
+
+1. **Always use `.env.example` as a template** - it documents all required variables
+2. **Never commit `.env`** - it's in `.gitignore` for security
+3. **Document custom values** - if you change defaults, note why in your deployment docs
+4. **Use different `.env` files per environment:**
+   ```bash
+   # Development
+   cp .env.example .env.dev
+   
+   # Production
+   cp .env.example .env.prod
+   
+   # Load specific env
+   export ENV_FILE=.env.prod
+   ```
 
 ## Troubleshooting
 
