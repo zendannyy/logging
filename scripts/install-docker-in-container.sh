@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Script to install Docker inside a container, how meta
 # WARNING: This requires the container to be run with --privileged flag
 
