@@ -278,7 +278,7 @@ deploy() {
 
 print_access_info() {
     
-    echo -e "${GREEN}========================================${NC}"
+    echo -e "${GREEN}========================================${NC}\n"
     echo -e "${GREEN}  Wazuh Multi-Node HA Ready!${NC}"
     echo -e "${GREEN}========================================${NC}\n"
     
