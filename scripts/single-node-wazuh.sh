@@ -205,8 +205,7 @@ deploy() {
 }
 
 print_access_info() {
-    echo -e "${GREEN}========================================${NC}\n"
-    echo -e "${GREEN}  Wazuh Single-Node Ready!${NC}"
+    echo -e "${GREEN}  Wazuh Single-Node Ready!${NC}\n"
     echo -e "${GREEN}========================================${NC}\n""
     echo -e "${BLUE}Dashboard:${NC} https://localhost:443"
     echo -e "${BLUE}Username:${NC} admin"
