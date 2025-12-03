@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 ################################################################################
 # Wazuh Multi-Node Docker Deployment (HA)
-# Production-grade high availability deployment
 ################################################################################
 
 set -e
@@ -277,8 +276,6 @@ deploy() {
 }
 
 print_access_info() {
-    
-    echo -e "${GREEN}========================================${NC}\n"
     echo -e "${GREEN}  Wazuh Multi-Node HA Ready!${NC}"
     echo -e "${GREEN}========================================${NC}\n"
     
@@ -300,7 +297,6 @@ print_access_info() {
     echo "  Status:  $0 status"
     echo "  Cluster: $0 cluster-info"
     echo -e "  Cleanup: $0 cleanup\n"
-    
 }
 
 status() {
