@@ -61,7 +61,6 @@ for i in {1..30}; do
     sleep 5
 done
 
-
 echo -e "\n================================\n"
 echo -e "Logging PoC is ready!\n"
 echo -e "================================\n"
@@ -70,7 +69,7 @@ echo "  Wazuh Dashboard:   https://localhost:443"
 echo "  Velociraptor GUI:  https://localhost:8000"
 echo -e "  Elasticsearch API: http://localhost:9200\n"
 echo "Credentials:"
-echo "  Wazuh:"
+echo -e "  Wazuh:\n"
 echo "    Username: admin"
 echo "    Password: SecurePassword123"
 echo ""
