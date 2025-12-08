@@ -1,5 +1,4 @@
-#!/bin/bash
-
+#!/usr/bin/env bash
 # Logging PoC Status Check Script
 
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -49,7 +48,7 @@ fi
 echo -e "[*] Container Logs (last 5 lines each):\n"
 
 for service in wazuh-manager wazuh-indexer wazuh-dashboard velociraptor-server ubuntu-agent-1; do
-    echo "--- $service ---"
+    echo -e "--- $service ---\n"
     docker compose logs --tail=5 $service 2>/dev/null || echo "  (no logs)"
 done
 
