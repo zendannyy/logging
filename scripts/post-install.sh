@@ -8,11 +8,11 @@ if [ $OS_ID = 'fedora' ]; then
     echo $OS_ID                                                                                            
     dnf update -y --skip-broken
     dnf install -y --skip-broken git curl wget; service wazuh-agent                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   t status
-elif [$OS_ID = 'ubuntu' ]; then
+elif [ $OS_ID = 'ubuntu' ]; then
     echo $OS_ID
     apt-get update -y                               
     apt-get install -y --fix-broken git curl wget; systemctl status wazuh-agent
-elif [$OS_ID = 'alpine' ]; then
+elif [ $OS_ID = 'alpine' ]; then
     echo $OS_ID
     apk add -y git curl wget; systemctl status wazuh-agent
 else
