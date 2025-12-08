@@ -7,7 +7,11 @@ OS_ID=$(. /etc/os-release && echo ${ID_LIKE:-$ID})
 if [ $OS_ID = 'fedora' ]; then
     echo $OS_ID                                                                                            
     dnf update -y --skip-broken
-    dnf install -y --skip-broken git curl wget; service wazuh-agent                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   t status
+    dnf install -y --skip-broken git curl wget; systemctl wazuh-agent
+elif [ $OS_ID = 'debian' ]; then
+    echo $OS_ID
+    apt-get update -y                               
+    apt-get install -y --fix-broken git curl wget; systemctl status wazuh-agent  
 elif [ $OS_ID = 'ubuntu' ]; then
     echo $OS_ID
     apt-get update -y                               
