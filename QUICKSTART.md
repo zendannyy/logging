@@ -46,6 +46,7 @@ All services should show as healthy.
 - Password: `admin`
 
 ⚠️ **Note**: Your browser will warn about self-signed certificates. Accept the warning to proceed.
+Fun fact: Technically Root CA's are inherently self-signed because they sit at the very top of the trust hierarchy.
 
 ## Common Tasks
 
@@ -120,10 +121,10 @@ docker-compose logs
 - Try a different browser
 - Run `./scripts/status.sh` to verify service health
 
-### Agent Not Reporting?
+### Issues With Agent Not Reporting
 
 ```bash
-# Check agent logs
+# Check the agent logs
 docker-compose exec ubuntu-agent-1 cat /var/ossec/logs/ossec.log
 
 # Check connectivity
@@ -131,7 +132,6 @@ docker-compose exec ubuntu-agent-1 ping wazuh-manager
 ```
 
 ## Performance Tips
-
 - Close unnecessary applications to free up RAM
 - Use SSD storage for better performance
 - Reduce Elasticsearch memory if needed: edit `.env` and restart
