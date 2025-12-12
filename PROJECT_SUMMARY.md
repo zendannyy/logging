@@ -4,7 +4,6 @@
 
 A complete logging and DFIR infrastructure has been successfully created using Docker, Wazuh, and Velociraptor.
 
-## What Was Created
 
 ### Core Components
 
@@ -248,6 +247,8 @@ logging-poc/
 - Linux or macOS
 - Fast internet (for image downloads)
 
+Genrally speaking, good to follow the reccomendations at 
+[Official: Wazuh Documentation](https://documentation.wazuh.com/current/deployment-options/virtual-machine/virtual-machine.html#hardware-requirements)
 ## Security Notes
 
 ⚠️ This is a **Proof of Concept** environment with default credentials.
