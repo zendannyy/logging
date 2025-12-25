@@ -33,6 +33,19 @@ RUN curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | apt-key add - && \
     systemctl disable wazuh-agent && \
     rm -rf /var/lib/apt/lists/*
 
+# Install Docker CLI (to use host's Docker socket)
+# We only need the CLI, not the daemon, since we'll mount the host's Docker socket
+RUN install -m 0755 -d /etc/apt/keyrings && \
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc && \
+    chmod a+r /etc/apt/keyrings/docker.asc && \
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list && \
+    apt-get update && \
+    apt-get install -y docker-ce-cli && \
+    # Create docker group and add root to it (for socket access)
+    groupadd -f docker && \
+    usermod -aG docker root || true && \
+    rm -rf /var/lib/apt/lists/*
+
 # Install Velociraptor client
 RUN mkdir -p /opt/velociraptor && \
     cd /opt/velociraptor && \
@@ -43,6 +56,23 @@ RUN mkdir -p /opt/velociraptor && \
 # Create startup script
 RUN mkdir -p /root/.ssh && \
     echo '#!/bin/bash\n\
+# Check Docker socket access\n\
+if [ -S /var/run/docker.sock ]; then\n\
+    echo "Docker socket found at /var/run/docker.sock"\n\
+    ls -la /var/run/docker.sock\n\
+    # Test Docker connectivity\n\
+    if docker ps > /dev/null 2>&1; then\n\
+        echo "SUCCESS: Docker is accessible!"\n\
+        docker version --format "Docker version: {{.Server.Version}}"\n\
+    else\n\
+        echo "WARNING: Docker socket exists but docker command failed"\n\
+        echo "Attempting to fix permissions..."\n\
+        chmod 666 /var/run/docker.sock 2>/dev/null || chown root:docker /var/run/docker.sock 2>/dev/null || true\n\
+    fi\n\
+else\n\
+    echo "WARNING: Docker socket not found at /var/run/docker.sock"\n\
+    echo "Make sure the socket is mounted in docker-compose.yml"\n\
+fi\n\
 \n\
 # Enable SSH\n\
 service ssh start\n\
